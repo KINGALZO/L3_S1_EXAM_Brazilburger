@@ -3,7 +3,4 @@ services:
     name: brasil-burger
     runtime: docker
     plan: free
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: ASPNETCORE_ENVIRONMENT
-        value: Production
+    dockerfilePath: ./BrasilBurger.Web/Dockerfile  
