@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: brasil-burger
-    runtime: docker
-    plan: free
-    dockerfilePath: ./BrasilBurger.Web/Dockerfile  
