@@ -43,5 +43,12 @@ namespace BrasilBurger.Web.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        [HttpGet("/debug/ping")]
+        [AllowAnonymous]
+        public IActionResult Ping()
+        {
+            return Json(new { status = "ok", time = DateTime.UtcNow });
+        }
     }
 }
