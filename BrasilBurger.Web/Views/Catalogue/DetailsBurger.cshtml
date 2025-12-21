@@ -1,0 +1,22 @@
+@model BrasilBurger.Web.Models.Burger
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container my-5">
+  <div class="row g-4">
+    <div class="col-12 col-md-6">
+      <img src="@Model.ImageUrl" class="img-fluid rounded-3 shadow-sm" alt="@Model.Name">
+    </div>
+    <div class="col-12 col-md-6">
+      <h2 class="fw-bold">@Model.Name</h2>
+      <p class="text-muted">@Model.Description</p>
+      <div class="mb-3 fw-bold text-orange fs-4">@String.Format("{0:N0}", Model.Price) FCFA</div>
+      <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex gap-2 align-items-center">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="type" value="Burger" />
+        <input type="number" name="qty" value="1" min="1" class="form-control w-auto" style="max-width:100px;" />
+        <button class="btn btn-add">Ajouter au panier</button>
+      </form>
+    </div>
+  </div>
+</div>

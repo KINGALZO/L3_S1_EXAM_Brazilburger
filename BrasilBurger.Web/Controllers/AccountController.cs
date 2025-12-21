@@ -56,7 +56,16 @@ namespace BrasilBurger.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        [HttpGet]
+        [Authorize]
+        public IActionResult Profile()
+        {
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdStr, out var userId)) return Challenge();
+            var user = _context.Clients.Find(userId);
+            if (user == null) return Challenge();
+            return View(user);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]

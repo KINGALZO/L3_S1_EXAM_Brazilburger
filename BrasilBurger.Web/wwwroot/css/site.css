@@ -32,15 +32,22 @@ body {
 
 :root{
   --brand-orange: #ff6a3d;
+  --brand-dark: #1f2933;
   --muted-beige: #f7f3f1;
   --footer-bg: #2e2220;
+  --muted: #6b6b6b;
 }
+body { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: var(--brand-dark); }
 
 .text-orange{ color: var(--brand-orange) !important; }
 
 .catalogue-hero{
   background: linear-gradient(180deg, rgba(250,246,240,1) 0%, rgba(250,246,240,1) 100%);
+  padding-top: 3.25rem;
+  padding-bottom: 3.25rem;
 }
+.navbar { background: white; box-shadow: 0 6px 20px rgba(31,41,51,0.06); }
+.navbar .navbar-brand{ font-weight:700; color:var(--brand-dark); }
 
 .search-filter .input-group .form-control{
   border: none;
@@ -50,11 +57,19 @@ body {
 .btn-filter{ border-radius: 999px; background: transparent; border: none; color: #6c6c6c; }
 .btn-filter.active{ background: linear-gradient(90deg, var(--brand-orange), #ff8a5c); color: white; box-shadow: 0 6px 18px rgba(255,106,61,0.15); }
 
-.product-card{ border-radius: 14px; overflow: hidden; }
+.product-card{ border-radius: 14px; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; }
+.product-card:hover{ transform: translateY(-6px); box-shadow: 0 10px 30px rgba(31,41,51,0.08); }
 .product-card .product-image{ height: 220px; object-fit: cover; }
 .price{ color: var(--brand-orange); }
 
-.btn-add{ background: linear-gradient(90deg, var(--brand-orange), #ff8a5c); color: #fff; border-radius: 999px; padding: .35rem .75rem; border: none; box-shadow: 0 6px 18px rgba(255,106,61,0.15); }
+.btn-add{ background: linear-gradient(90deg, var(--brand-orange), #ff8a5c); color: #fff; border-radius: 999px; padding: .45rem .9rem; border: none; box-shadow: 0 8px 20px rgba(255,106,61,0.15); font-weight:600; }
+.btn-outline-orange{ border-color: var(--brand-orange); color: var(--brand-orange); }
+
+@media (max-width: 576px){ .product-card .product-image{ height: 180px; } }
+
+.btn-orange{ background: linear-gradient(90deg, var(--brand-orange), #ff8a5c); color: #fff; border-radius: 8px; padding: .35rem .75rem; border: none; font-weight:600; }
+.btn-outline-orange{ border-color: var(--brand-orange); color: var(--brand-orange); border-width:1px; }
+
 
 footer.footer{
   background: var(--footer-bg); color: #c8bfb9; border-top: none; padding-top: 3rem; padding-bottom: 1.25rem; margin-top: 3rem;
