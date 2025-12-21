@@ -1,0 +1,31 @@
+@model List<BrasilBurger.Web.Models.CartItem>
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Passer la commande</h2>
+<form asp-action="Checkout" method="post">
+    <div class="mb-3">
+        <label class="form-label">Type de commande</label>
+        <select name="deliveryType" class="form-select">
+            <option>Sur place</option>
+            <option>À emporter</option>
+            <option>Livraison</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Adresse (si livraison)</label>
+        <input name="address" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Méthode de paiement</label>
+        <select name="paymentMethod" class="form-select">
+            <option>Wave</option>
+            <option>OM</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <strong>Montant total:</strong> @String.Format("{0:N0}", ViewBag.Total) FCFA
+    </div>
+    <button class="btn btn-success">Payer et confirmer</button>
+</form>

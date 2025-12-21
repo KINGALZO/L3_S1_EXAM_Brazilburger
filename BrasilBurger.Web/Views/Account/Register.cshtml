@@ -1,0 +1,31 @@
+@model BrasilBurger.Web.Models.Client
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Créer un compte</h2>
+<form asp-action="Register" method="post">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Prénom</label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nom</label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Téléphone</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" name="Password" class="form-control" />
+    </div>
+    <button class="btn btn-primary">Créer</button>
+</form>
