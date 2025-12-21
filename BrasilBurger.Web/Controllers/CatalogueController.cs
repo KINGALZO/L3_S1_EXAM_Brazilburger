@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using BrasilBurger.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using BrasilBurger.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrasilBurger.Web.Controllers
 {
