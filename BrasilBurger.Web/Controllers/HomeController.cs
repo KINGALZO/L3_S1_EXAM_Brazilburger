@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BrasilBurger.Web.Data;
 using BrasilBurger.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrasilBurger.Web.Controllers
 {
@@ -14,6 +15,7 @@ namespace BrasilBurger.Web.Controllers
             _context = context;
         }
         
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             try
@@ -23,8 +25,14 @@ namespace BrasilBurger.Web.Controllers
                     .OrderByDescending(b => b.CreatedAt)
                     .Take(12)
                     .ToListAsync();
+                var menus = await _context.Menus
+                    .Where(m => m.IsActive)
+                    .OrderByDescending(m => m.CreatedAt)
+                    .Take(6)
+                    .ToListAsync();
                 
                 ViewBag.Burgers = burgers;
+                ViewBag.Menus = menus;
                 ViewBag.BurgerCount = await _context.Burgers.CountAsync();
                 ViewBag.DatabaseStatus = "✅ Connecté à Neon PostgreSQL";
             }
