@@ -10,8 +10,9 @@ namespace BrasilBurger.Web.Models
         [EmailAddress(ErrorMessage = "Email invalide")]
         public string Email { get; set; }
         
-        [Required(ErrorMessage = "Le mot de passe est requis")]
-        public string Password { get; set; }
+            // Password is stored hashed in PasswordHash
+        public string? Password { get; set; }
+        public string? PasswordHash { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;

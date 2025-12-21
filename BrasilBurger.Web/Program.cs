@@ -1,5 +1,9 @@
 using BrasilBurger.Web.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using BrasilBurger.Web.Models;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +12,16 @@ var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 builder.WebHost.UseUrls($"http://*:{port}");
 
 // Services
-builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+        options.LoginPath = "/Account/Login";
+    });
+
+builder.Services.AddControllersWithViews(options =>
+{
+    // Require authenticated user by default
+    options.Filters.Add(new AuthorizeFilter());
+});
 
 // Database configuration (Neon PostgreSQL)
 var connectionString = builder.Configuration.GetConnectionString("NeonConnection")
@@ -37,6 +50,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
+// Auth
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseSession();
 
 app.MapControllerRoute(
@@ -70,16 +88,22 @@ using (var scope = app.Services.CreateScope())
             {
                 if (!await context.Clients.AnyAsync(c => c.Email == clientEmail))
                 {
-                    context.Clients.Add(new BrasilBurger.Web.Models.Client
+                    var seedClient = new BrasilBurger.Web.Models.Client
                     {
                         Email = clientEmail,
-                        Password = "alzoking",
+                        Password = null,
                         FirstName = "Alamin",
                         LastName = "Fall",
                         Phone = "+221331234567",
                         Address = "Dakar, Sénégal",
                         IsActive = true
-                    });
+                    };
+
+                    // Hash seed password
+                    var hasher = new PasswordHasher<User>();
+                    seedClient.PasswordHash = hasher.HashPassword(seedClient, "alzoking");
+
+                    context.Clients.Add(seedClient);
 
                     await context.SaveChangesAsync();
                     Console.WriteLine($"✅ Client seed ajouté: {clientEmail}");
