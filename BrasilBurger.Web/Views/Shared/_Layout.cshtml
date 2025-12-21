@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BrasilBurger.Web</title>
     <script type="importmap"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BrasilBurger.Web.styles.css" asp-append-version="true" />
@@ -41,19 +42,20 @@
                                 catch {}
                             }
                         }
-                        <a class="text-dark position-relative" asp-controller="Cart" asp-action="Index" title="Panier">🧺 <span class="badge bg-danger" id="cart-count">@cartCount</span></a>
+                        <a class="text-dark position-relative me-2" asp-controller="Cart" asp-action="Index" title="Panier">🧺 <span class="badge bg-danger" id="cart-count">@cartCount</span></a>
                         @if (User?.Identity?.IsAuthenticated == true)
                         {
-                            <span class="text-dark">👤 @User.Identity.Name</span>
+                            <a class="text-dark me-3" asp-controller="Orders" asp-action="Index">Commandes</a>
+                            <a class="text-dark me-2" asp-controller="Account" asp-action="Profile">👤 @User.Identity.Name</a>
                             <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-link text-dark p-0">Déconnexion</button>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">Déconnexion</button>
                                 @Html.AntiForgeryToken()
                             </form>
                         }
                         else
                         {
-                            <a class="text-dark" asp-controller="Account" asp-action="Login">Connexion</a>
-                            <a class="text-dark" asp-controller="Account" asp-action="Register">Inscription</a>
+                            <a class="btn btn-outline-orange btn-sm me-2" asp-controller="Account" asp-action="Login">Se connecter</a>
+                            <a class="btn btn-orange btn-sm" asp-controller="Account" asp-action="Register">S'inscrire</a>
                         }
                         <button class="btn btn-link p-0 d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">☰</button>
                     </div>
