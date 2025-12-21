@@ -1,24 +1,45 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BrasilBurger.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using BrasilBurger.Web.Data;
 
-namespace BrasilBurger.Web.Controllers;
-
-public class HomeController : Controller
+namespace BrasilBurger.Web.Controllers
 {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        private readonly ApplicationDbContext _context;
+        
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var burgers = await _context.Burgers
+                    .Where(b => b.IsActive)
+                    .OrderByDescending(b => b.CreatedAt)
+                    .Take(12)
+                    .ToListAsync();
+                
+                ViewBag.Burgers = burgers;
+                ViewBag.BurgerCount = await _context.Burgers.CountAsync();
+                ViewBag.DatabaseStatus = "✅ Connecté à Neon PostgreSQL";
+            }
+            catch (Exception)
+            {
+                ViewBag.DatabaseStatus = "❌ Erreur de connexion";
+                ViewBag.Burgers = new List<Burger>();
+                ViewBag.BurgerCount = 0;
+            }
+            
+            return View();
+        }
+        
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }
