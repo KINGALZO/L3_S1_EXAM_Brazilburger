@@ -112,6 +112,30 @@ using (var scope = app.Services.CreateScope())
                 {
                     Console.WriteLine($"ℹ️ Client déjà présent: {clientEmail}");
                 }
+
+                // Seed sample products (burgers + menus)
+                try
+                {
+                    if (!await context.Burgers.AnyAsync())
+                    {
+                        var b1 = new BrasilBurger.Web.Models.Burger { Name = "Classic Beef", Description = "Bœuf, fromage, salade, sauce maison", Price = 3500, ImageUrl = "/images/classic-beef.jpg", IsPopular=true };
+                        var b2 = new BrasilBurger.Web.Models.Burger { Name = "Chicken Crispy", Description = "Poulet croustillant, salade, sauce piquante", Price = 3200, ImageUrl = "/images/chicken-crispy.jpg" };
+                        var b3 = new BrasilBurger.Web.Models.Burger { Name = "Veggie Deluxe", Description = "Galette végétale, avocat, salade", Price = 3000, ImageUrl = "/images/veggie-deluxe.jpg" };
+                        context.Burgers.AddRange(b1, b2, b3);
+                        await context.SaveChangesAsync();
+
+                        var m1 = new BrasilBurger.Web.Models.Menu { Name = "Menu Classic", Description = "Classic + frites + boisson", Price = b1.Price + 800, BurgerId = b1.Id, ImageUrl = "/images/menu-classic.jpg" };
+                        var m2 = new BrasilBurger.Web.Models.Menu { Name = "Menu Crispy", Description = "Chicken Crispy + frites + boisson", Price = b2.Price + 800, BurgerId = b2.Id, ImageUrl = "/images/menu-crispy.jpg" };
+                        context.Menus.AddRange(m1, m2);
+                        await context.SaveChangesAsync();
+
+                        Console.WriteLine("✅ Seed produits ajouté: Burgers & Menus");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"⚠️ Erreur lors du seed produits: {ex.Message}");
+                }
             }
             catch (Exception ex)
             {

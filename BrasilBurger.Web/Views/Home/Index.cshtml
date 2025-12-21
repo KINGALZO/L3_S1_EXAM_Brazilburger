@@ -22,23 +22,54 @@
 
 <div class="container my-5">
   <div id="productsList" class="row gy-4">
-    @if (ViewBag.Burgers != null && ViewBag.Burgers.Count > 0)
+    @if ((ViewBag.Burgers != null && ViewBag.Burgers.Count > 0) || (ViewBag.Menus != null && ViewBag.Menus.Count > 0))
     {
-      @foreach(var burger in ViewBag.Burgers)
+      if(ViewBag.Menus != null && ViewBag.Menus.Count > 0)
       {
-        <div class="col-12 col-md-6">
-          <div class="card product-card overflow-hidden rounded-3 border-0 shadow-sm">
-            <img src="@burger.ImageUrl" class="card-img-top product-image" alt="@burger.Name" />
-            <div class="card-body">
-              <h5 class="card-title">@burger.Name</h5>
-              <p class="card-text text-muted small">@burger.Description</p>
-              <div class="d-flex align-items-center justify-content-between mt-3">
-                <div class="price fw-bold text-orange">@String.Format("{0:N0}", burger.Price) FCFA</div>
-                <button class="btn btn-add btn-sm">+ Ajouter</button>
+        foreach(var menu in ViewBag.Menus)
+        {
+          <div class="col-12 col-md-6">
+            <div class="card product-card overflow-hidden rounded-3 border-0 shadow-sm menu">
+              <img src="@menu.ImageUrl" class="card-img-top product-image" alt="@menu.Name" />
+              <div class="card-body">
+                <h5 class="card-title">@menu.Name</h5>
+                <p class="card-text text-muted small">@menu.Description</p>
+                <div class="d-flex align-items-center justify-content-between mt-3">
+                  <div class="price fw-bold text-orange">@String.Format("{0:N0}", menu.Price) FCFA</div>
+                  <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                      <input type="hidden" name="id" value="@menu.Id" />
+                      <input type="hidden" name="type" value="Menu" />
+                      <button type="submit" class="btn btn-add btn-sm">+ Ajouter</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        }
+      }
+
+      if(ViewBag.Burgers != null && ViewBag.Burgers.Count > 0)
+      {
+        foreach(var burger in ViewBag.Burgers)
+        {
+          <div class="col-12 col-md-6">
+            <div class="card product-card overflow-hidden rounded-3 border-0 shadow-sm burger">
+              <img src="@burger.ImageUrl" class="card-img-top product-image" alt="@burger.Name" />
+              <div class="card-body">
+                <h5 class="card-title">@burger.Name</h5>
+                <p class="card-text text-muted small">@burger.Description</p>
+                <div class="d-flex align-items-center justify-content-between mt-3">
+                  <div class="price fw-bold text-orange">@String.Format("{0:N0}", burger.Price) FCFA</div>
+                  <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                      <input type="hidden" name="id" value="@burger.Id" />
+                      <input type="hidden" name="type" value="Burger" />
+                      <button type="submit" class="btn btn-add btn-sm">+ Ajouter</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       }
     }
     else

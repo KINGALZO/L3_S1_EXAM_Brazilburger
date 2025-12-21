@@ -28,7 +28,20 @@
                         </li>
                     </ul>
                     <div class="nav-actions d-flex align-items-center gap-3">
-                        <a class="text-dark position-relative" asp-controller="Cart" asp-action="Index" title="Panier">🧺 <span class="badge bg-danger" id="cart-count">@(ViewBag.CartCount ?? 0)</span></a>
+                        @{ 
+                            var cartJson = Context.Session.GetString("Cart");
+                            int cartCount = 0;
+                            if (!string.IsNullOrEmpty(cartJson))
+                            {
+                                try
+                                {
+                                    var items = System.Text.Json.JsonSerializer.Deserialize<List<BrasilBurger.Web.Models.CartItem>>(cartJson);
+                                    cartCount = items?.Sum(i=>i.Quantity) ?? 0;
+                                }
+                                catch {}
+                            }
+                        }
+                        <a class="text-dark position-relative" asp-controller="Cart" asp-action="Index" title="Panier">🧺 <span class="badge bg-danger" id="cart-count">@cartCount</span></a>
                         @if (User?.Identity?.IsAuthenticated == true)
                         {
                             <span class="text-dark">👤 @User.Identity.Name</span>
